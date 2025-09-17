@@ -1,4 +1,3 @@
-// تعریف منو با JSON
 const menuItems = [
   { name: "سالاد سبز", price: 30000 },
   { name: "پیتزا پپرونی", price: 30000 },
@@ -6,15 +5,12 @@ const menuItems = [
   { name: "پاستا آلفردو", price: 30000 }
 ];
 
-// آرایه سبد خرید
 let cart = [];
 
-// گرفتن المنت‌ها از HTML
 const menuContainer = document.getElementById("menu");
 const cartContainer = document.getElementById("cart-items");
 const cartMessage = document.getElementById("cart-message");
 
-// ساختن آیتم‌های منو
 menuItems.forEach(item => {
   const div = document.createElement("div");
   div.className = "item";
@@ -28,15 +24,18 @@ menuItems.forEach(item => {
   menuContainer.appendChild(div);
 });
 
-// تابع افزودن به سبد خرید
 function addToCart(name, price) {
   cart.push({ name, price });
   updateCart();
 }
 
-// تابع نمایش سبد خرید
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  updateCart();
+}
+
 function updateCart() {
-  cartContainer.innerHTML = ""; // پاک کردن قبلی‌ها
+  cartContainer.innerHTML = "";
 
   if (cart.length === 0) {
     cartMessage.textContent = "سبد خرید شما خالی است";
@@ -45,9 +44,12 @@ function updateCart() {
 
   cartMessage.textContent = "آیتم‌های سبد خرید:";
 
-  cart.forEach(item => {
+  cart.forEach((item, index) => {
     const li = document.createElement("li");
-    li.textContent = `${item.name} - ${item.price.toLocaleString()} تومان`;
+    li.innerHTML = `
+      ${item.name} - ${item.price.toLocaleString()} تومان
+      <button onclick="removeFromCart(${index})" style="margin-right:10px; background-color:#dc3545;">❌ حذف</button>
+    `;
     cartContainer.appendChild(li);
   });
 }
